@@ -2,16 +2,13 @@ import uvicorn
 import os
 import logging
 
-from fastapi import FastAPI, security, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import HTTPBearer
 from icecream import ic
 
 
 from config import *
-from metric.routers import metric, variable, devops
-
-security = HTTPBearer()
+from routers import devops
 
 ic.configureOutput(prefix = 'ic| -> ')
 
@@ -20,6 +17,7 @@ logging.info('Start /v' + api_v + '/' + api)
 
 
 app = FastAPI(
+    name = "API Image Converter",
     title = "/api.image.converter",
     description = "API to convert picture in specific format.",
     version = "1.0.1",
@@ -58,8 +56,7 @@ app = FastAPI(
             }
         }
     ],
-    responses=responses_default,
-    dependencies=[Depends(security)]
+    responses=responses_default
 )
 
 # origins = ["http://127.0.0.1:3000"]
@@ -72,16 +69,6 @@ app.add_middleware(
     allow_headers = ["*"],
 )
 
-app.include_router(
-    metric.router,
-    tags = ["metric"],
-    prefix = "/v" + api_v + "/" + api
-)
-app.include_router(
-    variable.router,
-    tags = ["variable"],
-    prefix = "/v" + api_v + "/" + api
-)
 app.include_router(
     devops.router,
     tags = ["devops"],

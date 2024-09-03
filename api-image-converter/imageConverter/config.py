@@ -1,9 +1,9 @@
 # API config
-api = 'metric'
-api_v = '5'
+api = 'imageConverter'
+api_v = '1'
 
 # Mongo DB config
-mongo_database = 'metric'
+mongo_database = 'image_converter'
 
 # responses
 responses_pattern = {
